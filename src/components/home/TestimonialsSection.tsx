@@ -14,15 +14,13 @@ export function TestimonialsSection() {
       <Container className="pt-24 md:pt-32 lg:pt-40">
         <Eyebrow>Testimonials</Eyebrow>
         <h2 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl">
-          What clients say after we ship.
+          What clients say <em className="italic">after we ship.</em>
         </h2>
       </Container>
 
       <div className="mt-14">
         {isDesktop ? <TestimonialsDesktop /> : <TestimonialsMobile />}
       </div>
-
-      {isDesktop && <div aria-hidden="true" className="h-[70vh]" />}
 
       <div className="pb-24 md:pb-32 lg:pb-40" />
     </section>

@@ -1,33 +1,52 @@
 import { cn } from "@/lib/utils";
-import type { Testimonial } from "@/data/testimonials";
+import type { Testimonial, TestimonialTone } from "@/data/testimonials";
+
+const TONES: Record<TestimonialTone, { bg: string; ink: string; sub: string }> = {
+  cream: { bg: "#f2ead6", ink: "#1a1a1a", sub: "#5c5646" },
+  sage: { bg: "#cfdcc8", ink: "#182615", sub: "#48573f" },
+  amber: { bg: "#eec190", ink: "#241608", sub: "#5c4527" },
+  powder: { bg: "#ccd7ea", ink: "#161c29", sub: "#3f4b60" },
+};
 
 export function TestimonialCard({
   testimonial,
+  rotate = 0,
   className,
 }: {
   testimonial: Testimonial;
+  rotate?: number;
   className?: string;
 }) {
+  const tone = TONES[testimonial.tone];
+
   return (
     <div
+      style={{
+        backgroundColor: tone.bg,
+        color: tone.ink,
+        transform: rotate ? `rotate(${rotate}deg)` : undefined,
+      }}
       className={cn(
-        "flex h-full flex-col justify-between rounded-3xl border border-border bg-surface p-8 shadow-[0_0_40px_-20px_var(--color-accent)] md:p-10",
+        "flex h-full flex-col justify-between rounded-3xl p-8 shadow-[0_24px_50px_-24px_rgba(0,0,0,0.7)] md:p-10",
         className
       )}
     >
-      <p className="font-display text-xl leading-relaxed text-foreground md:text-2xl">
+      <p className="font-display text-xl leading-relaxed md:text-2xl">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
 
       <div className="mt-10 flex items-center gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface-2 font-mono text-sm text-accent">
+        <div
+          style={{ backgroundColor: tone.ink, color: tone.bg }}
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-mono text-sm"
+        >
           {testimonial.avatarInitials}
         </div>
         <div>
-          <p className="text-sm font-medium text-foreground">
-            {testimonial.name}
+          <p className="text-sm font-medium">{testimonial.name}</p>
+          <p className="text-sm" style={{ color: tone.sub }}>
+            {testimonial.role}
           </p>
-          <p className="text-sm text-subtle">{testimonial.role}</p>
         </div>
       </div>
     </div>
