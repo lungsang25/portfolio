@@ -18,9 +18,9 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50">
       <Container>
-        <div className="flex h-20 items-center justify-between">
+        <div className="my-4 flex h-16 items-center justify-between rounded-full border border-border px-6">
           <Link
             href="/"
             className="font-display text-xl tracking-tight text-foreground"
@@ -65,8 +65,8 @@ export function Nav() {
       </Container>
 
       {open && (
-        <div className="border-t border-border/60 md:hidden">
-          <Container className="flex flex-col gap-1 py-4">
+        <Container className="md:hidden">
+          <div className="-mt-2 mb-4 flex flex-col gap-1 rounded-2xl border border-border p-3">
             {links.map((link) => (
               <Link
                 key={link.href}
@@ -87,8 +87,8 @@ export function Nav() {
             >
               Book a meeting
             </Link>
-          </Container>
-        </div>
+          </div>
+        </Container>
       )}
     </header>
   );
