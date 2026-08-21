@@ -1,6 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { clients } from "@/data/clients";
 
 export function ClientMarquee() {
@@ -9,9 +8,8 @@ export function ClientMarquee() {
   return (
     <section id="clients" className="bg-bg-marquee py-24 md:py-32">
       <Container>
-        <Eyebrow>Clients</Eyebrow>
-        <h2 className="mt-6 font-display text-2xl text-foreground md:text-3xl">
-          Businesses we&apos;ve built and shipped for.
+        <h2 className="mx-auto max-w-2xl select-none text-center font-mono text-xs uppercase tracking-[0.2em] text-muted/75 md:text-sm">
+          Businesses we&apos;ve built and shipped for
         </h2>
       </Container>
 
@@ -23,7 +21,7 @@ export function ClientMarquee() {
               href={client.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mx-6 flex shrink-0 items-center gap-2 whitespace-nowrap font-display text-3xl text-muted transition-colors duration-200 hover:text-foreground md:text-5xl"
+              className="group mx-6 flex shrink-0 items-center gap-2 whitespace-nowrap font-display text-3xl text-foreground/55 transition-colors duration-200 hover:text-foreground md:text-5xl"
             >
               {client.name}
               <ArrowUpRight

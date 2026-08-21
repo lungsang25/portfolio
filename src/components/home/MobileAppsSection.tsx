@@ -28,7 +28,7 @@ export function MobileAppsSection() {
   };
 
   return (
-    <section className="flex min-h-screen items-center bg-bg-mobile py-24 md:py-32 lg:py-40">
+    <section className="relative z-10 -my-10 flex min-h-screen items-center rounded-[2.5rem] bg-bg-mobile py-24 md:-my-12 md:rounded-[3rem] md:py-32 lg:py-40">
       <Container>
         <div className="flex flex-col items-start gap-16 md:flex-row md:items-center md:justify-between">
           <motion.div

@@ -11,9 +11,9 @@
   --color-accent: #e3a857;
   --color-accent-fg: #0b0b0a;
 
-  --color-bg-hero: #14100f;
-  --color-bg-marquee: #0b1512;
-  --color-bg-mobile: #0a0e17;
+  --color-bg-hero: #0f2a1c;
+  --color-bg-marquee: #000000;
+  --color-bg-mobile: #12193a;
   --color-bg-testimonials: #000000;
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
