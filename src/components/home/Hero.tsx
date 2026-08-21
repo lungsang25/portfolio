@@ -27,7 +27,7 @@ export function Hero() {
   };
 
   return (
-    <section className="bg-bg-hero py-24 md:py-32 lg:py-40">
+    <section className="flex min-h-screen items-center bg-bg-hero py-24 md:py-32 lg:py-40">
       <Container>
         <motion.div
           initial="hidden"
@@ -50,7 +50,7 @@ export function Hero() {
             variants={item}
             className="mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl"
           >
-            Jajin LS designs and ships production-ready websites for growing
+            LS-020 designs and ships production-ready websites for growing
             businesses — no bloated timelines, no endless revisions. Just a
             clean build, on schedule.
           </motion.p>

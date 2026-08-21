@@ -26,7 +26,7 @@ export function Nav() {
             className="font-display text-xl tracking-tight text-foreground"
             onClick={() => setOpen(false)}
           >
-            Jajin LS
+            LS-020
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">

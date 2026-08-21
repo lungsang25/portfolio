@@ -20,9 +20,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jajin LS — Websites & Apps, Shipped Fast",
+  title: "LS-020 — Websites & Apps, Shipped Fast",
   description:
-    "Jajin LS builds and ships websites in 2 weeks and mobile apps in 3 weeks.",
+    "LS-020 builds and ships websites in 2 weeks and mobile apps in 3 weeks.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -30,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${fraunces.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <Nav />

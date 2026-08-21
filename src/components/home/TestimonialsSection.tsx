@@ -10,7 +10,7 @@ export function TestimonialsSection() {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
-    <section className="bg-bg-testimonials">
+    <section className="flex min-h-screen flex-col justify-center bg-bg-testimonials">
       <Container className="pt-24 md:pt-32 lg:pt-40">
         <Eyebrow>Testimonials</Eyebrow>
         <h2 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl">

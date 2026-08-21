@@ -12,7 +12,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border/60 bg-background">
       <Container className="flex flex-col items-center gap-6 py-12 md:flex-row md:justify-between">
-        <span className="font-display text-lg text-foreground">Jajin LS</span>
+        <span className="font-display text-lg text-foreground">LS-020</span>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           {links.map((link) => (
@@ -27,7 +27,7 @@ export function Footer() {
         </nav>
 
         <span className="text-xs text-subtle">
-          © {new Date().getFullYear()} Jajin LS. All rights reserved.
+          © {new Date().getFullYear()} LS-020. All rights reserved.
         </span>
       </Container>
     </footer>
