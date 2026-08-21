@@ -27,7 +27,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative z-10 -mb-10 flex min-h-screen items-center rounded-b-[2.5rem] bg-bg-hero py-24 md:-mb-12 md:rounded-b-[3rem] md:py-32 lg:py-40">
+    <section className="relative z-10 -mt-24 -mb-10 flex min-h-screen items-center rounded-b-[2.5rem] bg-bg-hero pt-48 pb-24 md:-mb-12 md:rounded-b-[3rem] md:pt-56 md:pb-32 lg:pt-64 lg:pb-40">
       <Container>
         <motion.div
           initial="hidden"
