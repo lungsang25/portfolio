@@ -27,15 +27,15 @@ export function TestimonialCard({
         transform: rotate ? `rotate(${rotate}deg)` : undefined,
       }}
       className={cn(
-        "flex h-full flex-col justify-between rounded-3xl p-8 shadow-[0_24px_50px_-24px_rgba(0,0,0,0.7)] md:p-10",
+        "flex h-full flex-col justify-between rounded-3xl p-6 shadow-[0_24px_50px_-24px_rgba(0,0,0,0.7)] md:p-8",
         className
       )}
     >
-      <p className="font-display text-xl leading-relaxed md:text-2xl">
+      <p className="font-display text-lg leading-relaxed md:text-xl">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
 
-      <div className="mt-10 flex items-center gap-4">
+      <div className="mt-6 flex items-center gap-4">
         <div
           style={{ backgroundColor: tone.ink, color: tone.bg }}
           className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-mono text-sm"
