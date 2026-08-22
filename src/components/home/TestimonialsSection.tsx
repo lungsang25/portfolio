@@ -1,10 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { TestimonialsDesktop } from "@/components/home/TestimonialsDesktop";
 import { TestimonialsMobile } from "@/components/home/TestimonialsMobile";
+
+const TestimonialsDesktop = dynamic(
+  () => import("@/components/home/TestimonialsDesktop3D").then((mod) => mod.TestimonialsDesktop3D),
+  { ssr: false }
+);
 
 export function TestimonialsSection() {
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -12,9 +16,8 @@ export function TestimonialsSection() {
   return (
     <section className="flex min-h-screen flex-col justify-center bg-bg-testimonials">
       <Container className="pt-24 md:pt-32 lg:pt-40">
-        <Eyebrow>Testimonials</Eyebrow>
-        <h2 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl">
-          What clients say <em className="italic">after we ship.</em>
+        <h2 className="mx-auto max-w-2xl text-center font-display text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl">
+          In our partners&rsquo; own words
         </h2>
       </Container>
 

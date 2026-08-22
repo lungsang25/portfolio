@@ -36,19 +36,19 @@ export function Hero() {
           className="max-w-3xl"
         >
           <motion.div variants={item}>
-            <Eyebrow>Web Development</Eyebrow>
+            <Eyebrow className="text-fg-hero/60">Web Development</Eyebrow>
           </motion.div>
 
           <motion.h1
             variants={item}
-            className="mt-6 font-display text-5xl leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+            className="mt-6 font-display text-5xl leading-[1.05] tracking-tight text-fg-hero md:text-6xl lg:text-7xl"
           >
             Websites, built and shipped in two weeks.
           </motion.h1>
 
           <motion.p
             variants={item}
-            className="mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl"
+            className="mt-8 max-w-xl text-lg leading-relaxed text-fg-hero/75 md:text-xl"
           >
             LS-020 designs and ships production-ready websites for growing
             businesses — no bloated timelines, no endless revisions. Just a
@@ -57,7 +57,7 @@ export function Hero() {
 
           <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
             <Button href="/book-a-meeting">Book a meeting</Button>
-            <Button href="#clients" variant="ghost">
+            <Button href="#clients" variant="ghost" className="border-fg-hero/30 text-fg-hero">
               See our work
             </Button>
           </motion.div>

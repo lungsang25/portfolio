@@ -19,8 +19,8 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50">
-      <Container>
-        <div className="my-4 flex h-16 items-center justify-between rounded-full border border-border px-6">
+      <Container className="max-w-4xl">
+        <div className="my-4 flex h-16 items-center justify-between rounded-full border border-border bg-surface/70 px-6 backdrop-blur-md">
           <Link
             href="/"
             className="font-display text-xl tracking-tight text-foreground"
@@ -37,7 +37,7 @@ export function Nav() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "relative text-sm text-muted transition-colors hover:text-foreground",
+                    "relative text-sm text-foreground/75 transition-colors hover:text-foreground",
                     active && "text-foreground"
                   )}
                 >
@@ -65,15 +65,15 @@ export function Nav() {
       </Container>
 
       {open && (
-        <Container className="md:hidden">
-          <div className="-mt-2 mb-4 flex flex-col gap-1 rounded-2xl border border-border p-3">
+        <Container className="max-w-4xl md:hidden">
+          <div className="-mt-2 mb-4 flex flex-col gap-1 rounded-2xl border border-border bg-surface/70 p-3 backdrop-blur-md">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "rounded-lg px-3 py-3 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground",
+                  "rounded-lg px-3 py-3 text-sm text-foreground/75 transition-colors hover:bg-surface hover:text-foreground",
                   pathname === link.href && "text-foreground"
                 )}
               >

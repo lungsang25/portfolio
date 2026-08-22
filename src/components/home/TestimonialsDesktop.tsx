@@ -101,7 +101,7 @@ export function TestimonialsDesktop() {
           trigger: wrapperRef.current,
           start: "top top",
           end: "bottom bottom",
-          scrub: 0.6,
+          scrub: 0.35,
           pin: stageRef.current,
         },
       });
@@ -132,7 +132,11 @@ export function TestimonialsDesktop() {
           ...initState,
         });
 
-        const cardTl = gsap.timeline();
+        // sine.inOut decelerates into the end of a tween and accelerates out
+        // of the start of the next one — so the two motion legs meet at the
+        // peak with matching (near-zero) velocity instead of one leg easing
+        // to a stop and the next kicking off at full speed right after it.
+        const cardTl = gsap.timeline({ defaults: { ease: "sine.inOut" } });
 
         // Position/rotation/scale: whatever's left of the first-half and/or
         // second-half legs, starting from the sampled mid-journey state.

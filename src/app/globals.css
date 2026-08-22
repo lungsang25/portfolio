@@ -11,10 +11,11 @@
   --color-accent: #e3a857;
   --color-accent-fg: #0b0b0a;
 
-  --color-bg-hero: #0f2a1c;
+  --color-bg-hero: #f8e7c9;
   --color-bg-marquee: #1a1a1a;
-  --color-bg-mobile: #12193a;
+  --color-bg-mobile: #064e3b;
   --color-bg-testimonials: #1a1a1a;
+  --color-fg-hero: #064e3b;
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
