@@ -16,8 +16,10 @@ export function TestimonialsSection() {
   return (
     <section className="flex min-h-screen flex-col justify-center bg-bg-testimonials">
       <Container className="pt-24 md:pt-32 lg:pt-40">
-        <h2 className="mx-auto max-w-2xl text-center font-display text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl">
-          In our partners&rsquo; own words
+        <h2 className="mx-auto max-w-2xl text-center font-classical text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl">
+          In our partners&rsquo;
+          <br />
+          own words
         </h2>
       </Container>
 

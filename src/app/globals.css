@@ -18,6 +18,7 @@
   --color-fg-hero: #064e3b;
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-classical: var(--font-playfair), ui-serif, Georgia, serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
