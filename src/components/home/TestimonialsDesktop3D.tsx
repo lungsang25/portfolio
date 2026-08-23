@@ -52,6 +52,12 @@ const LANES = [
   { laneVH: 20, riseVH: 13, tilt: 0, width: "w-[320px]" },
 ];
 
+// Every lane crosses through this same vertical mid-point (matching lane 3,
+// whose height reads best) rather than each lane's own laneVH — so whichever
+// card is centred under the heading always lands at the same height, while
+// each lane's own riseVH still varies its entry/exit swing.
+const SHARED_MID_VH = LANES[3].laneVH - LANES[3].riseVH / 2;
+
 type Path = {
   fromX: number;
   toX: number;
@@ -222,8 +228,8 @@ function Scene({
         const path: Path = {
           fromX: -REACH_VW * vw,
           toX: REACH_VW * vw,
-          fromY: (lane.laneVH * vh) / 100,
-          toY: ((lane.laneVH - lane.riseVH) * vh) / 100,
+          fromY: ((SHARED_MID_VH + lane.riseVH / 2) * vh) / 100,
+          toY: ((SHARED_MID_VH - lane.riseVH / 2) * vh) / 100,
           midX: 0,
           midY: 0,
         };
