@@ -17,6 +17,14 @@ gsap.registerPlugin(ScrollTrigger);
 // close together on screen — rather than showing up at opposite edges.
 const TRAVEL_DUR = 3;
 const STEP_DUR = 0.9;
+// Card 0 starts already at rest (mid-journey) rather than entering from
+// off-stage like the rest, so the 0→1 gap reads as much longer than the
+// uniform 1→2 / 2→3 gaps even at the same STEP_DUR — this shortens just
+// that first gap while leaving the rest evenly spaced by STEP_DUR.
+const FIRST_STEP_DUR = 0;
+// Gap between card 1 and card 2 specifically — shortened from the base
+// STEP_DUR while 2→3 (and beyond) stay on the original, "okay" spacing.
+const SECOND_STEP_DUR = 0.5;
 // How far a card travels left-to-right, as a fraction of viewport width.
 // Kept just wide enough that cards still start/end fully off-screen.
 const REACH_VW = 0.72;
@@ -224,10 +232,20 @@ function Scene({
 
         // The very first card rests centred and fully visible — as if it
         // were a static hero — right when the section is reached; it only
-        // starts its exit once the user actually scrolls. Every other card
-        // starts fully hidden off-stage and enters staggered behind it.
-        const initFraction = i === 0 ? 0.5 : 0;
-        const activeStart = i === 0 ? 0 : i * STEP_DUR;
+        // starts its exit once the user actually scrolls. Card 1 gets a
+        // small head start into its own entrance (already timing-aligned
+        // with card 0 via activeStart=0) so it's peeking in rather than
+        // fully hidden at rest, shrinking the 0→1 gap further than stagger
+        // timing alone can. Cards 2+ still start fully hidden off-stage.
+        const initFraction = i === 0 ? 0.5 : i === 1 ? 0.18 : 0;
+        const activeStart =
+          i === 0
+            ? 0
+            : i === 1
+              ? FIRST_STEP_DUR
+              : i === 2
+                ? FIRST_STEP_DUR + SECOND_STEP_DUR
+                : FIRST_STEP_DUR + SECOND_STEP_DUR + (i - 2) * STEP_DUR;
 
         const initState = sampleAt(initFraction, path);
         const initY = i === 0 ? restY : initState.y;
