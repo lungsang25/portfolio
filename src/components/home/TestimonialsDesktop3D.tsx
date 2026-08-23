@@ -254,7 +254,12 @@ function Scene({
                 : FIRST_STEP_DUR + SECOND_STEP_DUR + (i - 2) * STEP_DUR;
 
         const initState = sampleAt(initFraction, path);
-        const initY = i === 0 ? restY : initState.y;
+        // Card 0's rest state should land at the same shared centred height
+        // as every other card (initState.y, from SHARED_MID_VH) — but never
+        // closer to the heading than restY allows, so short viewports still
+        // keep the clearance fixed earlier. Larger Y = further down-screen,
+        // so Math.max picks whichever is safer.
+        const initY = i === 0 ? Math.max(initState.y, restY) : initState.y;
         // Y is flipped: CSS translateY grows downward, three.js Y grows up.
         gsap.set(group.position, { x: initState.x, y: -initY, z: initState.z });
         gsap.set(group.rotation, {
