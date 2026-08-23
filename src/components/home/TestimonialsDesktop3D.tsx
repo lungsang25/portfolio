@@ -46,10 +46,10 @@ const LANES = [
   // laneVH nudged down from the original -18 (used by the pure flying-
   // carousel version) so card 0's resting mid-point clears the heading
   // pinned above it, instead of the two overlapping at rest.
-  { laneVH: 8, riseVH: 14, tilt: -5, width: "w-[380px]" },
-  { laneVH: 10, riseVH: 16, tilt: 4, width: "w-[340px]" },
-  { laneVH: -6, riseVH: 11, tilt: -3, width: "w-[400px]" },
-  { laneVH: 20, riseVH: 13, tilt: 5, width: "w-[320px]" },
+  { laneVH: 8, riseVH: 14, tilt: 0, width: "w-[380px]" },
+  { laneVH: 10, riseVH: 16, tilt: 0, width: "w-[340px]" },
+  { laneVH: -6, riseVH: 11, tilt: 0, width: "w-[400px]" },
+  { laneVH: 20, riseVH: 13, tilt: 0, width: "w-[320px]" },
 ];
 
 type Path = {
