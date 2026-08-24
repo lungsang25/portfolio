@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { ModeToggle } from "@/components/layout/ModeToggle";
 
 const links = [
   { href: "/softwares", label: "Softwares" },
@@ -21,13 +22,16 @@ export function Nav() {
     <header className="sticky top-0 z-50">
       <Container className="max-w-4xl">
         <div className="my-4 flex h-16 items-center justify-between rounded-full border border-border bg-surface/70 px-6 backdrop-blur-md">
-          <Link
-            href="/"
-            className="font-display text-xl tracking-tight text-foreground"
-            onClick={() => setOpen(false)}
-          >
-            LS-020
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="font-display text-xl tracking-tight text-foreground"
+              onClick={() => setOpen(false)}
+            >
+              LS-020
+            </Link>
+            <ModeToggle />
+          </div>
 
           <nav className="hidden items-center gap-8 md:flex">
             {links.map((link) => {

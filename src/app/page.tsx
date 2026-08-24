@@ -1,6 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { ClientMarquee } from "@/components/home/ClientMarquee";
-import { MobileAppsSection } from "@/components/home/MobileAppsSection";
+import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <Hero />
       <ClientMarquee />
-      <MobileAppsSection />
+      <FeaturesSection />
       <TestimonialsSection />
     </>
   );

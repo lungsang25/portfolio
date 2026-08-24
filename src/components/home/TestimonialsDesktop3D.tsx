@@ -360,7 +360,7 @@ export function TestimonialsDesktop3D({ heading }: { heading?: ReactNode }) {
   return (
     <div ref={wrapperRef} className="relative h-[220vh]">
       {/* z-20: once GSAP pins this (switching it to position:fixed), it needs
-          to out-rank MobileAppsSection's own z-10 rounded overlap panel —
+          to out-rank FeaturesSection's own z-10 rounded overlap panel —
           without an explicit z-index here, the fixed stage's new stacking
           context has no priority against that sibling section and loses. */}
       <div ref={stageRef} className="relative z-20 h-screen w-full overflow-hidden">

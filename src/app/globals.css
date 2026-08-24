@@ -17,6 +17,9 @@
   --color-bg-testimonials: #1a1a1a;
   --color-fg-hero: #064e3b;
 
+  --color-bg-app: #f8f7f4;
+  --color-fg-app: #0057ff;
+
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-classical: var(--font-playfair), ui-serif, Georgia, serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;

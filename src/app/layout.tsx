@@ -3,6 +3,7 @@ import { Fraunces, Geist, Geist_Mono, Playfair_Display } from "next/font/google"
 import "./globals.css";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
+import { SiteModeProvider } from "@/context/site-mode";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -38,9 +39,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteModeProvider>
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </SiteModeProvider>
       </body>
     </html>
   );
