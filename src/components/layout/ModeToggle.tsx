@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useSiteMode, type SiteMode } from "@/context/site-mode";
 
@@ -11,6 +12,15 @@ const options: { value: SiteMode; label: string }[] = [
 
 export function ModeToggle() {
   const { mode, setMode } = useSiteMode();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleSelect = (value: SiteMode) => {
+    setMode(value);
+    if (pathname !== "/") {
+      router.push("/");
+    }
+  };
 
   return (
     <div className="flex items-center rounded-full border border-border bg-surface/60 p-1 text-sm">
@@ -21,7 +31,7 @@ export function ModeToggle() {
             key={option.value}
             type="button"
             aria-pressed={active}
-            onClick={() => setMode(option.value)}
+            onClick={() => handleSelect(option.value)}
             className={cn(
               "relative rounded-full px-3.5 py-1.5 font-medium transition-colors duration-200",
               active ? "text-accent-fg" : "text-foreground/60 hover:text-foreground"
