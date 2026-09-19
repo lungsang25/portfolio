@@ -2,29 +2,39 @@ import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { Testimonial } from "@/data/testimonials";
 
-// Deep green on the left fading to a faint cream on the right, over the
-// section's black + glow backdrop. Plain gradients rather than
-// backdrop-filter: the book animation rotates these panes in 3D, where
-// backdrop-filter flickers or drops out.
-const GLASS_BG =
-  "linear-gradient(115deg, rgba(6,78,59,0.78) 0%, rgba(24,104,82,0.52) 48%, rgba(253,255,234,0.2) 100%)";
+export const PAPER_RADIUS = "0.75rem";
 
-export function GlassSurface({
+// Faint fibre speckle, tiled. Kept as an SVG data URI so there is no asset to
+// load and it stays crisp at any density.
+const GRAIN = `url("data:image/svg+xml,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0 0.12  0.36 0 0 0 -0.08'/></filter><rect width='180' height='180' filter='url(#n)'/></svg>"
+)}")`;
+
+// Paper is the hero's cream with grain, a shaded binding edge on the left
+// (where the page is hinged) and a soft lift of light from the top.
+const BINDING = "linear-gradient(90deg, rgba(120,84,30,0.16) 0%, rgba(120,84,30,0) 6%)";
+const TOP_LIGHT = "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 45%)";
+
+// `binding` is off for the reverse of a turned page, which has no visible
+// spine shading of its own.
+export function PaperFace({
+  binding = true,
   className,
   style,
   children,
 }: {
+  binding?: boolean;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
 }) {
   return (
     <div
-      style={{ background: GLASS_BG, ...style }}
-      className={cn(
-        "relative overflow-hidden rounded-[2rem] border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_30px_70px_-30px_rgba(0,0,0,0.85)]",
-        className
-      )}
+      className={cn("bg-bg-hero", className)}
+      style={{
+        backgroundImage: (binding ? [GRAIN, BINDING, TOP_LIGHT] : [GRAIN, TOP_LIGHT]).join(", "),
+        ...style,
+      }}
     >
       {children}
     </div>
@@ -33,18 +43,18 @@ export function GlassSurface({
 
 export function TestimonialContent({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <div className="p-7 md:p-12">
-      <p className="bg-linear-to-r from-fg-marquee via-fg-marquee to-fg-marquee/60 bg-clip-text font-sans text-xl leading-relaxed text-transparent md:text-[1.75rem] md:leading-[1.45]">
+    <div className="flex h-full min-h-88 flex-col justify-between gap-8 p-8 text-fg-hero md:min-h-96 md:p-14">
+      <p className="font-display text-2xl leading-[1.35] tracking-tight md:text-[2rem]">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
 
-      <div className="mt-8 flex items-center gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-sm text-accent-fg ring-1 ring-white/30">
+      <div className="flex items-center gap-4">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-fg-hero font-mono text-sm text-bg-hero">
           {testimonial.avatarInitials}
         </div>
         <div>
-          <p className="text-base font-medium text-fg-marquee">{testimonial.name}</p>
-          <p className="text-sm text-fg-marquee/60">{testimonial.role}</p>
+          <p className="text-base font-medium">{testimonial.name}</p>
+          <p className="text-sm text-fg-hero/65">{testimonial.role}</p>
         </div>
       </div>
     </div>
@@ -59,8 +69,11 @@ export function TestimonialCard({
   className?: string;
 }) {
   return (
-    <GlassSurface className={className}>
+    <PaperFace
+      style={{ borderRadius: PAPER_RADIUS }}
+      className={cn("shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)]", className)}
+    >
       <TestimonialContent testimonial={testimonial} />
-    </GlassSurface>
+    </PaperFace>
   );
 }

@@ -4,9 +4,10 @@ import { useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { testimonials } from "@/data/testimonials";
+import { testimonials, type Testimonial } from "@/data/testimonials";
 import {
-  GlassSurface,
+  PAPER_RADIUS,
+  PaperFace,
   TestimonialCard,
   TestimonialContent,
 } from "@/components/home/TestimonialCard";
@@ -24,52 +25,119 @@ const PAGE_SCROLL_VH = 90;
 const TURN = 0.6;
 const HOLD = 0.4;
 
-// Where a page sits in the deck, by how many pages are above it. Pages behind
-// the top one peek out as offset glass panes; deeper ones are hidden.
+// A page is cut into this many vertical strips, each hinged to the one
+// before it, so it can bend like paper instead of swinging as a flat board.
+const STRIPS = 16;
+// How far (degrees, end to end) the free edge leads the spine at the peak of
+// a turn, spread evenly over the strips. Zero at the start and end, so the
+// page is perfectly flat at rest.
+const TOTAL_BEND = 56;
+const BEND_PER_STRIP = TOTAL_BEND / (STRIPS - 1);
+// Darkest a strip gets as it turns edge-on, and darkest shadow a turning
+// page casts on the sheet beneath it.
+const SHADE_MAX = 0.42;
+const CAST_MAX = 0.4;
+
+// Where a sheet sits in the pile, by how many sheets are above it: a slightly
+// smaller, lower, dimmer sheet each layer, so their edges peek out.
 const STACK = [
-  { y: 0, scale: 1, rotation: 0, opacity: 1 },
-  { y: 16, scale: 0.965, rotation: 0.8, opacity: 1 },
-  { y: 32, scale: 0.93, rotation: -0.8, opacity: 0.75 },
-  { y: 44, scale: 0.9, rotation: 0, opacity: 0 },
+  { y: 0, scale: 1, rotation: 0, opacity: 1, dim: 0 },
+  { y: 7, scale: 0.988, rotation: 0.5, opacity: 1, dim: 0.1 },
+  { y: 14, scale: 0.976, rotation: -0.5, opacity: 1, dim: 0.2 },
+  { y: 18, scale: 0.97, rotation: 0, opacity: 0, dim: 0.28 },
 ];
 
 const stackAt = (depth: number) =>
   STACK[Math.min(Math.max(depth, 0), STACK.length - 1)];
 
-const FACE: CSSProperties = {
-  backfaceVisibility: "hidden",
-  WebkitBackfaceVisibility: "hidden",
+const slotVars = (depth: number) => {
+  const { y, scale, rotation, opacity } = stackAt(depth);
+  return { y, scale, rotation, opacity };
 };
 
-function Glow() {
+const DECK_VARS = {
+  "--deck-w": "min(92vw, 860px)",
+  "--strip-w": `calc(var(--deck-w) / ${STRIPS})`,
+} as CSSProperties;
+
+// One vertical slice of a page. Each strip holds the matching slice of the
+// full page (so text and grain line up across strips) on its front, plain
+// paper on its back, and the next strip nested inside it — which is what
+// makes each strip's rotation add on to the one before.
+function Strip({ index, testimonial }: { index: number; testimonial: Testimonial }) {
+  const first = index === 0;
+  const last = index === STRIPS - 1;
+
+  const face: CSSProperties = {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    // The 1px overlap into the next strip hides hairline seams between them.
+    width: last ? "var(--strip-w)" : "calc(var(--strip-w) + 1px)",
+    overflow: "hidden",
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+    borderRadius: first
+      ? `${PAPER_RADIUS} 0 0 ${PAPER_RADIUS}`
+      : last
+        ? `0 ${PAPER_RADIUS} ${PAPER_RADIUS} 0`
+        : undefined,
+  };
+
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-      <div
-        className="absolute -left-[10%] top-[25%] h-[60vh] w-[65vw]"
-        style={{
-          background:
-            "radial-gradient(closest-side, rgba(6,78,59,0.85), transparent)",
-        }}
-      />
-      <div
-        className="absolute -right-[10%] bottom-[5%] h-[55vh] w-[55vw]"
-        style={{
-          background:
-            "radial-gradient(closest-side, rgba(227,168,87,0.28), transparent)",
-        }}
-      />
+    <div
+      data-strip
+      style={{
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: first ? 0 : "var(--strip-w)",
+        width: "var(--strip-w)",
+        transformStyle: "preserve-3d",
+        transformOrigin: "0 50%",
+      }}
+    >
+      <div style={face}>
+        <PaperFace
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: `calc(var(--strip-w) * ${-index})`,
+            width: "var(--deck-w)",
+          }}
+        >
+          <TestimonialContent testimonial={testimonial} />
+        </PaperFace>
+        <div
+          data-shade-front
+          className="pointer-events-none absolute inset-0 bg-black"
+          style={{ opacity: 0 }}
+        />
+      </div>
+
+      <div style={{ ...face, transform: "rotateY(180deg)" }}>
+        <PaperFace binding={false} style={{ position: "absolute", inset: 0 }} />
+        <div
+          data-shade-back
+          className="pointer-events-none absolute inset-0 bg-black"
+          style={{ opacity: 0 }}
+        />
+      </div>
+
+      {!last && <Strip index={index + 1} testimonial={testimonial} />}
     </div>
   );
 }
 
-// Reduced motion: no pinning and no turning — just the cards, one after
+// Reduced motion: no pinning and no turning — just the sheets, one after
 // another.
 function StaticList({ heading }: { heading?: ReactNode }) {
   return (
-    <div className="relative overflow-hidden">
-      <Glow />
-      <div className="relative px-6 pt-24 md:pt-28 lg:pt-32">{heading}</div>
-      <div className="relative mx-auto flex w-[min(92vw,860px)] flex-col gap-6 py-16 md:py-24">
+    <div className="overflow-hidden">
+      <div className="px-6 pt-24 md:pt-28 lg:pt-32">{heading}</div>
+      <div className="mx-auto flex w-[min(92vw,860px)] flex-col gap-6 py-16 md:py-24">
         {testimonials.map((testimonial) => (
           <TestimonialCard key={testimonial.id} testimonial={testimonial} />
         ))}
@@ -105,22 +173,51 @@ export function TestimonialsBook({ heading }: { heading?: ReactNode }) {
       const wrapper = wrapperRef.current;
       if (!wrapper || count < 2) return;
 
-      const query = <T extends HTMLElement>(selector: string) =>
-        Array.from(wrapper.querySelectorAll<T>(selector));
+      const query = (selector: string) =>
+        Array.from(wrapper.querySelectorAll<HTMLElement>(selector));
       const slots = query("[data-slot]");
-      const pages = query("[data-page]");
-      const contents = query("[data-content]");
-      const frontShades = query("[data-shade-front]");
-      const backShades = query("[data-shade-back]");
+      const dims = query("[data-dim]");
+      const casts = query("[data-cast]");
+      // Strips are nested, so document order is hinge-to-free-edge order.
+      const strips = query("[data-page]").map((page) =>
+        Array.from(page.querySelectorAll<HTMLElement>("[data-strip]")).map((el) => ({
+          el,
+          front: el.querySelector<HTMLElement>("[data-shade-front]")!,
+          back: el.querySelector<HTMLElement>("[data-shade-back]")!,
+        }))
+      );
 
-      slots.forEach((slot, i) => gsap.set(slot, stackAt(i)));
-      gsap.set(pages, { rotationX: 0, rotationY: 0, transformOrigin: "0% 50%" });
-      gsap.set(contents, { opacity: (i: number) => (i === 0 ? 1 : 0) });
-      gsap.set([...frontShades, ...backShades], { opacity: 0 });
+      const inOut = gsap.parseEase("power2.inOut");
+
+      // Poses page k at turn progress p (0 = flat and closed, 1 = flat and
+      // turned). The strip at the spine swings the whole way round; every
+      // strip after it adds a little extra, easing in and out with the turn,
+      // so the free edge leads and the page bows before settling flat. Each
+      // strip darkens as it goes edge-on, which reads as light along the curl.
+      const pose = (k: number, p: number) => {
+        const swing = -180 * inOut(p);
+        const bow = -Math.sin(Math.PI * p) * BEND_PER_STRIP;
+        let total = 0;
+        strips[k].forEach(({ el, front, back }, i) => {
+          const turn = i === 0 ? swing : bow;
+          total += turn;
+          el.style.transform = `rotateY(${turn}deg)`;
+          const shade = String(SHADE_MAX * Math.sin((total * Math.PI) / 180) ** 2);
+          front.style.opacity = shade;
+          back.style.opacity = shade;
+        });
+        // The sheet underneath is shadowed while the page is lifted over it.
+        if (casts[k + 1]) casts[k + 1].style.opacity = String(Math.sin(Math.PI * p) * CAST_MAX);
+      };
+
+      slots.forEach((slot, i) => gsap.set(slot, slotVars(i)));
+      dims.forEach((dim, i) => gsap.set(dim, { opacity: stackAt(i).dim }));
+      casts.forEach((cast) => gsap.set(cast, { opacity: 0 }));
+      strips.forEach((_, k) => pose(k, 0));
 
       // immediateRender is off so each fromTo only applies its "from" values
       // once the playhead reaches it, instead of every later turn stamping
-      // its start state over the initial deck at creation time.
+      // its start state over the initial pile at creation time.
       const tl = gsap.timeline({
         defaults: { ease: "none", immediateRender: false },
         scrollTrigger: {
@@ -134,41 +231,24 @@ export function TestimonialsBook({ heading }: { heading?: ReactNode }) {
       for (let k = 0; k < count - 1; k++) {
         const t = HOLD / 2 + k * (TURN + HOLD);
 
-        // The page turns about its left edge, its free edge lifting toward
-        // the viewer and sweeping right to left, with a slight tip forward
-        // as it goes.
-        tl.fromTo(
-          pages[k],
-          { rotationY: 0 },
-          { rotationY: -180, duration: TURN, ease: "power2.inOut" },
-          t
-        );
+        // The turn itself. Driven through a plain number so the poses above
+        // are computed in one place; complete/reverse-complete snap to the
+        // exact end poses when the scroll jumps past the whole turn.
+        const progress = { p: 0 };
         tl.to(
-          pages[k],
+          progress,
           {
-            keyframes: [
-              { rotationX: 6, duration: TURN / 2, ease: "sine.out" },
-              { rotationX: 0, duration: TURN / 2, ease: "sine.in" },
-            ],
+            p: 1,
+            duration: TURN,
+            onUpdate: () => pose(k, progress.p),
+            onComplete: () => pose(k, 1),
+            onReverseComplete: () => pose(k, 0),
           },
           t
         );
 
-        // Light falls off as the page nears edge-on, then returns on the
-        // back face; the page fades out in its second half so turned pages
-        // don't pile up on the left.
-        tl.fromTo(
-          frontShades[k],
-          { opacity: 0 },
-          { opacity: 0.55, duration: TURN * 0.5, ease: "power1.in" },
-          t
-        );
-        tl.fromTo(
-          backShades[k],
-          { opacity: 0.55 },
-          { opacity: 0, duration: TURN * 0.5, ease: "power1.out" },
-          t + TURN * 0.5
-        );
+        // The turned sheet fades out in the second half of its turn so turned
+        // pages don't pile up on the left.
         tl.fromTo(
           slots[k],
           { opacity: 1 },
@@ -176,22 +256,21 @@ export function TestimonialsBook({ heading }: { heading?: ReactNode }) {
           t + TURN * 0.45
         );
 
-        // Everything behind moves up one layer, and the page that becomes
-        // the top one fades its text in as the page above clears it.
+        // Every sheet behind moves up one layer in the pile.
         for (let j = k + 1; j < count; j++) {
           tl.fromTo(
             slots[j],
-            stackAt(j - k),
-            { ...stackAt(j - k - 1), duration: TURN, ease: "power2.inOut" },
+            slotVars(j - k),
+            { ...slotVars(j - k - 1), duration: TURN, ease: "power2.inOut" },
+            t
+          );
+          tl.fromTo(
+            dims[j],
+            { opacity: stackAt(j - k).dim },
+            { opacity: stackAt(j - k - 1).dim, duration: TURN, ease: "power2.inOut" },
             t
           );
         }
-        tl.fromTo(
-          contents[k + 1],
-          { opacity: 0 },
-          { opacity: 1, duration: TURN * 0.45 },
-          t + TURN * 0.4
-        );
       }
 
       // Extend the timeline over the final rest so scroll progress maps
@@ -210,21 +289,32 @@ export function TestimonialsBook({ heading }: { heading?: ReactNode }) {
       style={{ height: `calc(100vh + ${(count - 1) * PAGE_SCROLL_VH}vh)` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        <Glow />
-
         <div className="relative z-10 px-6 pt-24 md:pt-28 lg:pt-32">{heading}</div>
 
+        {/* The deck below is decorative and repeats each quote once per strip,
+            so screen readers get the testimonials once, here. */}
+        <ul className="sr-only">
+          {testimonials.map((testimonial) => (
+            <li key={testimonial.id}>
+              <blockquote>{testimonial.quote}</blockquote>
+              <p>
+                {testimonial.name}, {testimonial.role}
+              </p>
+            </li>
+          ))}
+        </ul>
+
         <div className="relative flex flex-1 items-center justify-center px-4 pb-12">
-          {/* All pages share one grid cell, so the deck is as tall as the
-              tallest quote and every page matches it. */}
-          <div className="grid w-[min(92vw,860px)]">
+          {/* All sheets share one grid cell, so the deck is as tall as the
+              tallest quote and every sheet matches it. */}
+          <div aria-hidden="true" className="grid" style={{ ...DECK_VARS, width: "var(--deck-w)" }}>
             {testimonials.map((testimonial, i) => {
               const s = stackAt(i);
               return (
                 <div
                   key={testimonial.id}
                   data-slot
-                  className="[grid-area:1/1]"
+                  className="relative [grid-area:1/1]"
                   style={{
                     perspective: 2800,
                     zIndex: count - i,
@@ -234,32 +324,43 @@ export function TestimonialsBook({ heading }: { heading?: ReactNode }) {
                   }}
                 >
                   <div
+                    className="absolute inset-0 shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)]"
+                    style={{ borderRadius: PAPER_RADIUS }}
+                  />
+
+                  <div
                     data-page
                     className="relative h-full"
-                    style={{ transformStyle: "preserve-3d", transformOrigin: "0% 50%" }}
+                    style={{ transformStyle: "preserve-3d" }}
                   >
-                    <GlassSurface className="h-full" style={FACE}>
-                      <div data-content style={{ opacity: i === 0 ? 1 : 0 }}>
-                        <TestimonialContent testimonial={testimonial} />
-                      </div>
-                      <div
-                        data-shade-front
-                        className="pointer-events-none absolute inset-0 bg-linear-to-r from-transparent to-black/80"
-                        style={{ opacity: 0 }}
-                      />
-                    </GlassSurface>
-
-                    <GlassSurface
+                    {/* In-flow copy that gives the page its height; the strips
+                        are absolutely positioned over it. */}
+                    <div className="invisible">
+                      <TestimonialContent testimonial={testimonial} />
+                    </div>
+                    <div
                       className="absolute inset-0"
-                      style={{ ...FACE, transform: "rotateY(180deg)" }}
+                      style={{ transformStyle: "preserve-3d" }}
                     >
-                      <div
-                        data-shade-back
-                        className="pointer-events-none absolute inset-0 bg-linear-to-l from-transparent to-black/80"
-                        style={{ opacity: 0 }}
-                      />
-                    </GlassSurface>
+                      <Strip index={0} testimonial={testimonial} />
+                    </div>
                   </div>
+
+                  <div
+                    data-dim
+                    className="pointer-events-none absolute inset-0 bg-black"
+                    style={{ opacity: s.dim, borderRadius: PAPER_RADIUS }}
+                  />
+                  <div
+                    data-cast
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      opacity: 0,
+                      borderRadius: PAPER_RADIUS,
+                      background:
+                        "linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.12) 60%, rgba(0,0,0,0))",
+                    }}
+                  />
                 </div>
               );
             })}
