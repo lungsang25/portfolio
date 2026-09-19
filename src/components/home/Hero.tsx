@@ -35,7 +35,7 @@ export function Hero() {
   return (
     <section
       className={cn(
-        "relative z-10 -mt-24 -mb-10 flex min-h-screen items-center rounded-b-[2.5rem] pt-48 pb-24 md:-mb-12 md:rounded-b-[3rem] md:pt-56 md:pb-32 lg:pt-64 lg:pb-40",
+        "relative -mt-24 flex min-h-[calc(100vh+2.5rem)] items-center pt-48 pb-24 md:min-h-[calc(100vh+3rem)] md:pt-56 md:pb-32 lg:pt-64 lg:pb-40",
         isApp ? "bg-bg-app" : "bg-bg-hero"
       )}
     >
