@@ -12,29 +12,36 @@ const GRAIN = `url("data:image/svg+xml,${encodeURIComponent(
 
 // Paper is the hero's cream with grain, a shaded binding edge on the left
 // (where the page is hinged) and a soft lift of light from the top.
-const BINDING = "linear-gradient(90deg, rgba(120,84,30,0.16) 0%, rgba(120,84,30,0) 6%)";
+const BINDING_LEFT = "linear-gradient(90deg, rgba(120,84,30,0.16) 0%, rgba(120,84,30,0) 6%)";
+// The reverse of a page, seen from the front once it has turned: its spine
+// edge is on the right.
+const BINDING_RIGHT =
+  "linear-gradient(270deg, rgba(120,84,30,0.16) 0px, rgba(120,84,30,0) 36px)";
 const TOP_LIGHT = "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 45%)";
 
-// `binding` is off for the reverse of a turned page, which has no visible
-// spine shading of its own.
+// `binding` says which edge is shaded by the spine: the left of a page's
+// front, the right of its reverse (only where the reverse meets the spine).
 export function PaperFace({
-  binding = true,
+  binding = "left",
   className,
   style,
   children,
 }: {
-  binding?: boolean;
+  binding?: "left" | "right" | false;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
 }) {
+  const layers = [
+    GRAIN,
+    binding === "left" ? BINDING_LEFT : binding === "right" ? BINDING_RIGHT : null,
+    TOP_LIGHT,
+  ].filter(Boolean);
+
   return (
     <div
       className={cn("bg-bg-hero", className)}
-      style={{
-        backgroundImage: (binding ? [GRAIN, BINDING, TOP_LIGHT] : [GRAIN, TOP_LIGHT]).join(", "),
-        ...style,
-      }}
+      style={{ backgroundImage: layers.join(", "), ...style }}
     >
       {children}
     </div>
@@ -43,7 +50,7 @@ export function PaperFace({
 
 export function TestimonialContent({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <div className="flex h-full min-h-88 flex-col justify-between gap-8 p-8 text-fg-hero md:min-h-96 md:p-14">
+    <div className="flex h-full min-h-88 flex-col justify-between gap-8 p-8 pl-12 text-fg-hero md:min-h-96 md:p-14 md:pl-16">
       <p className="font-display text-2xl leading-[1.35] tracking-tight md:text-[2rem]">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
