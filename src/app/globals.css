@@ -26,7 +26,7 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
-  --animate-marquee: marquee 32s linear infinite;
+  --animate-marquee: marquee 100s linear infinite;
 }
 
 @keyframes marquee {
