@@ -3,8 +3,6 @@
 // not real people. Swap this array with real testimonial data when available;
 // no component changes are needed elsewhere.
 
-export type TestimonialTone = "cream" | "sage" | "amber" | "powder";
-
 export type Testimonial = {
   id: string;
   quote: string;
@@ -12,7 +10,6 @@ export type Testimonial = {
   role: string;
   avatarInitials: string;
   clientName: string;
-  tone: TestimonialTone;
 };
 
 export const testimonials: Testimonial[] = [
@@ -24,7 +21,6 @@ export const testimonials: Testimonial[] = [
     role: "Placeholder Title, Tibet417",
     avatarInitials: "JP",
     clientName: "Tibet417",
-    tone: "cream",
   },
   {
     id: "kunphen",
@@ -34,7 +30,6 @@ export const testimonials: Testimonial[] = [
     role: "Placeholder Title, Kunphen Medical Center",
     avatarInitials: "AS",
     clientName: "Kunphen Medical Center",
-    tone: "sage",
   },
   {
     id: "webuddhist",
@@ -44,7 +39,6 @@ export const testimonials: Testimonial[] = [
     role: "Placeholder Title, Webuddhist",
     avatarInitials: "SE",
     clientName: "Webuddhist",
-    tone: "amber",
   },
   {
     id: "letsgokings",
@@ -54,6 +48,5 @@ export const testimonials: Testimonial[] = [
     role: "Placeholder Title, Let's Go Kings",
     avatarInitials: "RD",
     clientName: "Let's Go Kings",
-    tone: "powder",
   },
 ];
