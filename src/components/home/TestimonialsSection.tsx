@@ -1,10 +1,8 @@
 import { TestimonialsBook } from "@/components/home/TestimonialsBook";
 
 const heading = (
-  <h2 className="mx-auto max-w-2xl text-center font-classical text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl">
-    In our partners&rsquo;
-    <br />
-    own words
+  <h2 className="mx-auto max-w-4xl select-none text-center font-mono text-sm uppercase leading-[1.2] tracking-widest text-foreground md:text-base">
+    In our partners&rsquo; own words
   </h2>
 );
 
