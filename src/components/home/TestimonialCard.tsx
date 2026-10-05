@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { Testimonial } from "@/data/testimonials";
@@ -51,13 +52,23 @@ export function PaperFace({
 export function TestimonialContent({ testimonial }: { testimonial: Testimonial }) {
   return (
     <div className="flex h-full min-h-96 flex-col justify-between gap-8 p-8 pl-12 text-fg-hero md:min-h-112 md:p-14 md:pl-16">
-      <p className="font-display text-2xl leading-[1.35] tracking-tight md:text-[2rem]">
+      <p className="font-display text-[1.375rem] leading-[1.35] tracking-tight md:text-[1.8125rem]">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
 
       <div className="flex items-center gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-fg-hero font-mono text-sm text-bg-hero">
-          {testimonial.avatarInitials}
+        <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-fg-hero font-mono text-sm text-bg-hero">
+          {testimonial.avatarSrc ? (
+            <Image
+              src={testimonial.avatarSrc}
+              alt={testimonial.name}
+              fill
+              sizes="80px"
+              className="object-cover"
+            />
+          ) : (
+            testimonial.avatarInitials
+          )}
         </div>
         <div>
           <p className="text-base font-medium">{testimonial.name}</p>

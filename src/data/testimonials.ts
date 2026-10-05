@@ -9,6 +9,7 @@ export type Testimonial = {
   name: string;
   role: string;
   avatarInitials: string;
+  avatarSrc?: string;
   clientName: string;
 };
 
@@ -16,19 +17,21 @@ export const testimonials: Testimonial[] = [
   {
     id: "tibet417",
     quote:
-      "The team took our idea and shipped a site that actually felt finished — fast, clean, and exactly on brief.",
-    name: "Jane Placeholder",
-    role: "Placeholder Title, Tibet417",
-    avatarInitials: "JP",
+      "Communication was clear from the very first call, and updates came without us having to chase them. The team took our idea and shipped a site that felt finished — fast, clean, and exactly on brief.",
+    name: "Ngawang Dorjee",
+    role: "Founder, Tibet417",
+    avatarInitials: "ND",
+    avatarSrc: "/testimonials/ngawang-dorjee.jpg",
     clientName: "Tibet417",
   },
   {
     id: "kunphen",
     quote:
-      "Clear communication from day one and a build that made our clinic look as trustworthy online as it is in person.",
-    name: "Alex Sample",
-    role: "Placeholder Title, Kunphen Medical Center",
-    avatarInitials: "AS",
+      "They took the time to understand how our hospital works and what patients need. The new site is easy to navigate, reflects the care we give in person, and arrived on schedule.",
+    name: "Nyima Tsering",
+    role: "Managing Director, Kunphen Hospital",
+    avatarInitials: "NT",
+    avatarSrc: "/testimonials/nyima-tsering.jpg",
     clientName: "Kunphen Medical Center",
   },
   {
