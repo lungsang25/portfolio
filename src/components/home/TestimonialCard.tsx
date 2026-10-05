@@ -50,7 +50,7 @@ export function PaperFace({
 
 export function TestimonialContent({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <div className="flex h-full min-h-88 flex-col justify-between gap-8 p-8 pl-12 text-fg-hero md:min-h-96 md:p-14 md:pl-16">
+    <div className="flex h-full min-h-96 flex-col justify-between gap-8 p-8 pl-12 text-fg-hero md:min-h-112 md:p-14 md:pl-16">
       <p className="font-display text-2xl leading-[1.35] tracking-tight md:text-[2rem]">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
